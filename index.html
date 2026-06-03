@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisata Yogyakarta Istimewa</title>
+    <style>
+        /* --- CSS STYLING --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            opacity: 0; /* Untuk animasi halaman muncul */
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        /* Fitur Java/JS: Animasi Halaman Muncul */
+        body.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #2c3e50;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 15px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #1abc9c;
+        }
+
+        /* Hero Banner */
+     .banner {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1604999333679-b86d54738315?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .banner h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        .btn-cta {
+            background-color: #1abc9c;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-cta:hover {
+            background-color: #16a085;
+        }
+
+        /* Section General Style */
+        section {
+            padding: 80px 20px 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #1abc9c;
+            margin: 10px auto 0 auto;
+        }
+
+        /* Profile Section (Dinamis / Bisa diisi sendiri) */
+        .profile-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-left {
+            text-align: center;
+            flex: 1;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* Membuat foto berbentuk bulat lingkaran */
+            object-fit: cover;
+            border: 4px solid #1abc9c;
+            margin-bottom: 10px;
+        }
+
+        .upload-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .upload-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .profile-info {
+            flex: 2;
+        }
+
+        .profile-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .profile-info td {
+            padding: 10px 5px;
+            font-size: 1.05rem;
+            vertical-align: middle;
+        }
+
+        .profile-info td:first-child {
+            font-weight: bold;
+            color: #1abc9c;
+            width: 100px;
+        }
+
+        .profile-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: #fafafa;
+            transition: 0.3s;
+        }
+
+        .profile-input:focus {
+            border-color: #1abc9c;
+            background-color: #fff;
+            outline: none;
+        }
+
+        .btn-save-profile {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-save-profile:hover {
+            background-color: #1abc9c;
+        }
+
+        /* Article Section (Slider & Search) */
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-container input {
+            padding: 12px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Slider */
+        .slider-container {
+            position: relative;
+            max-width: 100%;
+            height: auto; /* mengecilkan/membesarkan tinggi foto slider */
+            overflow: hidden;
+            border-radius: 8px; /* Membuat pojokan/sudut kotak foto melengkung halus */
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .slides {
+            display: flex;
+            height: 100%;
+            width: 600%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* Article Cards */
+        .article-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .article-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        /* CSS Tambahan Khusus untuk Foto di dalam Artikel agar rapi */
+        .article-card img {
+            width: 200px;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .more-text {
+            display: none;
+        }
+
+        .btn-more {
+            background: none;
+            border: none;
+            color: #1abc9c;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 0;
+            font-size: 1rem;
+        }
+
+        .btn-more:hover {
+            text-decoration: underline;
+        }
+
+        /* Guestbook Section */
+        .guestbook-form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-submit {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #1abc9c;
+        }
+
+        .success-msg {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .search-container input {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#profil">Profil</a></li>
+            <li><a href="#artikel">Artikel</a></li>
+            <li><a href="#buku-tamu">Buku Tamu</a></li>
+        </ul>
+    </nav>
+
+    <header id="beranda" class="banner">
+        <h1>Wisata Yogyakarta Istimewa</h1>
+        <p>Selamat datang di portal informasi wisata Yogyakarta. Temukan keindahan budaya, sejarah, alam, dan kuliner khas yang tak terlupakan di kota penuh kenangan ini.</p>
+        <a href="index.html" class="btn-cta">Jelajahi Artikel</a>
+    </header>
+
+    <section id="profil">
+        <h2>Profil</h2>
+        <div class="profile-container">
+            
+            <div class="profile-left">
+                <img src="gambar/mine.jpeg" alt="Foto Profil" class="profile-img" id="fotoProfil">
+                <br>
+                <input type="file" id="inputFileFoto" accept="image/*" onchange="previewFoto(this)" style="display: none;">
+                <button type="button" class="upload-btn" onclick="document.getElementById('inputFileFoto').click()">Pilih Foto...</button>
+            </div>
+            
+           <div class="profile-info">
+    <form id="formIsiProfil">
+        <table>
+            <tr>
+                <td>Nama</td>
+                <td>:
+                    <input type="text" id="profNama" class="profile-input"
+                        value="Ayudhya Intan Pusparainy B">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Kelas</td>
+                <td>:
+                    <input type="text" id="profKelas" class="profile-input"
+                        value="X SIJA 2">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Sekolah</td>
+                <td>:
+                    <input type="text" id="profSekolah" class="profile-input"
+                        value="SMK Negeri 2 Yogyakarta">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Hobi</td>
+                <td>:
+                    <input type="text" id="profHobi" class="profile-input"
+                        value="Berenang, Basket">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Skill</td>
+                <td>:
+                    <input type="text" id="profSkill" class="profile-input"
+                        value="Dapat berbicara dan menulis Bahasa Mandarin secara fasih">
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <button type="button" class="btn-save-profile" onclick="saveProfileData()">
+                        Simpan Profil
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+        </div>
+    </section>
+
+    <section id="artikel">
+        <h2>Destinasi Wisata</h2>
+
+        <div class="search-container">
+    <input type="text"
+           id="searchBar"
+           placeholder="Cari nama destinasi wisata di Yogyakarta..."
+           onkeypress="if(event.key==='Enter') searchArticle()">
+</div>
+        <div class="slider-container">
+            <div class="slides" id="slider">
+                <div class="slide">
+                    <img src="gambar/CANDI PRAMBANAN _ SHIVA TEMPLE.jpg" alt="Candi Prambanan">
+                    
+                </div>
+                <div class="slide">
+                    <img src="gambar/parangtritis.png" alt="Pantai Parangtritis">
+                    
+                </div>
+                <div class="slide">
+                    <img src="gambar/malbor.png" alt="Malioboro">
+                 
+                </div>
+                <div class="slide">
+                   <img src="gambar/borobudur.png" alt="Borobudur">
+                   
+                </div>
+                <div class="slide">
+                    <img src="gambar/on the rock.png" alt="On The Rock">
+            
+                </div>
+                <div class="slide">
+                    <img src="gambar/Screenshot 2026-06-02 124938.png" alt="Heha Sky">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="articleList">
+            <div class="article-card">
+                <h3>1. Jalan Malioboro - Jantung Kota Jogja</h3>
+                <img src="gambar/Malioboro.jpg" alt="Jalan Malioboro">
+                <p>Jalan Malioboro merupakan ikon utama pariwisata di Yogyakarta. Tempat ini menawarkan pengalaman belanja cinderamata khas, batik, serta kuliner lesehan yang menggugah selera. <span class="more-text" id="more1">Di sepanjang jalan ini, Anda juga bisa menikmati alunan musik jalanan yang syahdu serta naik andong untuk mengelilingi kawasan nol kilometer dan Keraton Yogyakarta. Tempat ini selalu hidup 24 jam dengan keramahan khas warganya.</span></p>
+                <button class="btn-more" onclick="toggleReadMore('more1', this)">Baca Selengkapnya...</button>
+            </div>
+
+            <div class="article-card">
+                <h3>2. Candi Prambanan - Legenda Roro Jonggrang</h3>
+                <img src="gambar/CANDI PRAMBANAN _ SHIVA TEMPLE.jpg" alt="Candi Prambanan">
+                <p>Candi Prambanan adalah complexes candi Hindu terbesar di Indonesia yang dibangun pada abad ke-9. Keindahan arsitekturnya yang menjulang tinggi memikat jutaan wisatawan dunia. <span class="more-text" id="more2">Selain mengagumi relief relief candi yang bercerita tentang kisah Ramayana, pengunjung juga dapat menyaksikan pagelaran megah Sendratari Ramayana yang dipentaskan di panggung terbuka dengan latar belakang candi Prambanan yang diterangi lampu sorot di malam hari.</span></p>
+                <button class="btn-more" onclick="toggleReadMore('more2', this)">Baca Selengkapnya...</button>
+            </div>
+            <div class="article-card">
+                <h3>3. Candi Borobudur - Monumen Buddha Terbesar</h3>
+                <img src="gambar/candi borobudur.jpg" alt="Candi Borobudur">
+                <p>Candi Borobudur di Magelang, Jawa Tengah, adalah monumen Buddha terbesar di dunia. Dibangun pada abad ke-8 dan ke-9 
+                    <span class="more-text" id="more3">oleh Dinasti Syailendra, candi ini sempat terbengkalai dan tertimbun abu vulkanik sebelum ditemukan kembali
+              pada abad ke-19 dan ditetapkan sebagai Situs Warisan Dunia UNESCO</span></p>
+              <button class="btn-more" onclick="toggleReadMore('more3', this)">Baca Selengkapnya...</button>
+            </div>
+            <div class="article-card">
+                <h3>4. Pantai Parangtritis - Pesona Mistis Pantai Selatan</h3>
+                <img src="gambar/wisata dipantai parangtritis jogja.jpg" alt="Pantai Parangtritis">
+                <p>Terletak sekitar 27 km selatan Kota Yogyakarta, Pantai Parangtritis menawarkan pemandangan ombak laut selatan yang besar berpadu dengan gumuk pasir yang langka di dunia. <span class="more-text" id="more3">Pantai ini sangat lekat dengan legenda Kanjeng Ratu Kidul. Aktivitas favorit wisatawan di sini adalah menyusuri bibir pantai menggunakan bendi, bermain ATV, atau sekadar duduk santai menikmati pemandangan matahari terbenam (sunset) yang magis di ufuk barat.</span></p>
+                <button class="btn-more" onclick="toggleReadMore('more3', this)">Baca Selengkapnya...</button>
+            </div>
+
+            <div class="article-card">
+                <h3>5. On the rock - Spot foto aesthethic kekinian </h3>
+                <img src="gambar/download (53).jpg">
+                <p>Destinasi wisata pantai dan kuliner viral di kawasan Pantai Drini, Gunungkidul, Yogyakarta. Dikenal dengan sebutan "Bali-nya Jogja"<span class="more-text" id="more4"> tempat ini memadukan arsitektur modern dengan tebing kapur dan panorama Samudra Hindia.</span></p>
+                <button class="btn-more" onclick="toggleReadMore('more4', this)">Baca Selengkapnya...</button>
+            </div>
+            <div class="article-card" id="heha-sky">
+                <h3>6. Heha Sky - Keindahan wisata dan pantai nya</h3>
+                <img src="gambar/heha sky.jpg" alt="Heha Sky">
+                <p>Heha Sky adalah destinasi wisata alam yang terletak di kawasan Gunungkidul, Yogyakarta. Tempat ini menawarkan pemandangan yang memukau dengan tebing karst yang menjulang dan laut yang jernih. <span class="more-text" id="more5">Wisatawan dapat menikmati aktivitas seperti hiking, bersepeda, atau sekadar bersantai sambil menikmati pemandangan alam yang indah.</span></p>
+                <button class="btn-more" onclick="toggleReadMore('more5', this)">Baca Selengkapnya...</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="buku-tamu">
+        <h2>Buku Tamu</h2>
+        <div class="guestbook-form">
+            <form id="formGuest" onsubmit="return validateForm(event)">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap:</label>
+                    <input type="text" id="nama" placeholder="Masukkan nama Anda">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Masukkan email Anda">
+                </div>
+                <div class="form-group">
+                    <label for="pesan">Pesan / Kesan:</label>
+                    <textarea id="pesan" rows="4" placeholder="Tuliskan pesan Anda mengenai wisata Yogyakarta..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Pesan</button>
+            </form>
+            <div class="success-msg" id="successMessage">
+                 Terima kasih! Pesan Anda berhasil dikirim ke Buku Tamu.
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Tempat Wisata Yang Wajib Dikunjungi Di Yogyakarta Istimewa.</p>
+    </footer>
+
+
+    <script>
+        // FITUR 1: Animasi Muncul saat Halaman Pertama Kali Dibuka
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+
+   
+        function previewFoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('fotoProfil').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // FITUR 3: Tombol Simpan Interaktif untuk Konfirmasi Profil Baru
+        function saveProfileData() {
+            const nama = document.getElementById('profNama').value.trim();
+            const kelas = document.getElementById('profKelas').value.trim();
+
+            if (nama === "" || kelas === "") {
+                alert("Minimal isi nama dan kelas kamu terlebih dahulu sebelum menyimpan!");
+            } else {
+                alert("Profil Berhasil Diperbarui!\nHalo " + nama + " dari kelas " + kelas + ". Data kamu telah disimpan di halaman ini.");
+            }
+        }
+
+        // FITUR 4: Slide Gambar Otomatis (Bagian Artikel)
+        let currentSlide = 0;
+        const slider = document.getElementById('slider');
+        const totalSlides = 6;
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            slider.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
+        }, 3000); // Gambar berganti otomatis setiap 3 detik sekali
+
+        // FITUR 5: Tombol "Baca Selengkapnya"
+        function toggleReadMore(id, btn) {
+            const moreText = document.getElementById(id);
+            if (moreText.style.display === "none" || moreText.style.display === "") {
+                moreText.style.display = "inline";
+                btn.innerText = "Sembunyikan";
+            } else {
+                moreText.style.display = "none";
+                btn.innerText = "Baca Selengkapnya...";
+            }
+        }
+
+        function searchArticle() {
+            const input = document.getElementById('searchBar').value.toLowerCase();
+            const articles = document.getElementsByClassName('article-card');
+
+            for (let i = 0; i < articles.length; i++) {
+                const title = articles[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+                const text = articles[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+                
+                if (title.includes(input) || text.includes(input)) {
+                    articles[i].style.display = "block";
+                } else {
+                    articles[i].style.display = "none";
+                }
+            }
+        }
+
+        
+        function validateForm(event) {
+            event.preventDefault();
+            
+            const nama = document.getElementById('nama').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const pesan = document.getElementById('pesan').value.trim();
+            const successMessage = document.getElementById('successMessage');
+
+      
+            if (nama === "" || email === "" || pesan === "") {
+                alert("Gagal Kirim! Semua kolom di formulir Buku Tamu wajib diisi.");
+                return false;
+            }
+
+           
+            if (!email.includes("@") || !email.includes(".")) {
+                alert("Format alamat email salah! Mohon gunakan tanda '@' dan titik '.'");
+                return false;
+            }
+
+            // Aksi Jika Validasi Berhasil (Menampilkan Notifikasi Sukses)
+            successMessage.style.display = "block";
+            
+            // Mengosongkan isian form setelah tombol kirim berhasil diklik
+            document.getElementById('formGuest').reset();
+
+            // Pesan sukses otomatis hilang dalam waktu 5 detik
+            setTimeout(() => {
+                successMessage.style.display = "none";
+            }, 5000);
+
+            return true;
+        }
+    </script>
+</body>
+</html>
